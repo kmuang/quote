@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quotes</title> 
+  <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-purple-200 via-pink-100 to-yellow-100 min-h-screen flex items-center justify-center">
+
+  <div class="bg-white glass p-8 rounded-2xl shadow-xl max-w-lg w-full text-center">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">💬 Random Quote Generator</h1>
+    <p id="quoteText" class="text-lg text-gray-700 mb-6 italic">Click the button to get inspired!</p>
+    
+    <button id="newQuoteBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-2 rounded-full transition">
+      New Quote
+    </button>
+  </div>
+
+  <script>
+    const quotes = [
+      "The best way to predict the future is to create it. – Peter Drucker",
+      "Do one thing every day that scares you. – Eleanor Roosevelt",
+      "Success is not final, failure is not fatal: it is the courage to continue that counts. – Winston Churchill",
+      "Happiness is not something ready-made. It comes from your own actions. – Dalai Lama",
+      "Believe you can and you're halfway there. – Theodore Roosevelt",
+      "Dream big and dare to fail. – Norman Vaughan",
+      "You miss 100% of the shots you don't take. – Wayne Gretzky",
+      "In the middle of every difficulty lies opportunity. – Albert Einstein",
+      "It always seems impossible until it's done. – Nelson Mandela"
+    ];
+
+    const quoteText = document.getElementById('quoteText');
+    const newQuoteBtn = document.getElementById('newQuoteBtn');
+
+    function showQuote() {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      quoteText.textContent = quotes[randomIndex];
+    }
+
+    // Show a new quote when button is clicked
+    newQuoteBtn.addEventListener('click', showQuote);
+
+    // Show a random quote on load
+    showQuote();
+
+    // Automatically change quote every 5 seconds
+    setInterval(showQuote, 5000);
+  </script>
+
+</body>
+</html>

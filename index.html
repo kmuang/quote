@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5e9f5">
+  <title>Daily Inspiration Quote</title>
+  <link rel="icon" href="img/logo.png" type="image/png">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #29233a;
+      background: #f5e9f5;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      display: grid;
+      min-height: 100vh;
+      min-height: 100svh;
+      place-items: center;
+      margin: 0;
+      padding: 1.5rem;
+      background: linear-gradient(120deg, #eadcf8, #fff0f2 55%, #fff4d7);
+    }
+
+    main {
+      width: min(100%, 34rem);
+      padding: clamp(1.5rem, 6vw, 3rem);
+      border: 1px solid rgb(255 255 255 / 75%);
+      border-radius: 1.5rem;
+      background: rgb(255 255 255 / 88%);
+      box-shadow: 0 1.25rem 3.5rem rgb(57 35 77 / 14%);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 2rem;
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      line-height: 1.2;
+    }
+
+    blockquote {
+      margin: 0 0 2rem;
+    }
+
+    #quoteText {
+      margin: 0;
+      color: #433a55;
+      font-size: clamp(1.15rem, 4vw, 1.4rem);
+      font-style: italic;
+      line-height: 1.65;
+    }
+
+    #quoteAuthor {
+      display: block;
+      margin-top: 1rem;
+      color: #665a78;
+      font-size: 0.95rem;
+      font-style: normal;
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    button {
+      min-height: 2.75rem;
+      padding: 0.65rem 1.25rem;
+      border: 2px solid #6841a5;
+      border-radius: 999px;
+      background: #6841a5;
+      color: white;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 650;
+      transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: #523282;
+      border-color: #523282;
+    }
+
+    button.secondary {
+      background: transparent;
+      color: #523282;
+    }
+
+    button.secondary:hover {
+      background: #f2ebfa;
+    }
+
+    button:focus-visible {
+      outline: 3px solid #29233a;
+      outline-offset: 3px;
+    }
+
+    #shareStatus {
+      min-height: 1.5rem;
+      margin: 1rem 0 0;
+      color: #44345f;
+      font-size: 0.9rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>💬 Daily Inspiration Quote</h1>
+    <blockquote>
+      <p id="quoteText">Click the button to get inspired!</p>
+      <cite id="quoteAuthor"></cite>
+    </blockquote>
+    <div class="actions">
+      <button id="newQuoteBtn" type="button">New Quote</button>
+      <button id="shareQuoteBtn" class="secondary" type="button">Share quote</button>
+    </div>
+    <p id="shareStatus" role="status" aria-live="polite"></p>
+  </main>
+
+  <script>
+    const quotes = [
+      {
+        text: "The best way to predict the future is to create it.",
+        author: "Peter Drucker"
+      },
+      {
+        text: "Do one thing every day that scares you.",
+        author: "Eleanor Roosevelt"
+      },
+      {
+        text: "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+        author: "Winston Churchill"
+      },
+      {
+        text: "Happiness is not something ready-made. It comes from your own actions.",
+        author: "Dalai Lama"
+      },
+      {
+        text: "Believe you can and you're halfway there.",
+        author: "Theodore Roosevelt"
+      },
+      {
+        text: "Dream big and dare to fail.",
+        author: "Norman Vaughan"
+      },
+      {
+        text: "You miss 100% of the shots you don't take.",
+        author: "Wayne Gretzky"
+      },
+      {
+        text: "In the middle of every difficulty lies opportunity.",
+        author: "Albert Einstein"
+      },
+      {
+        text: "It always seems impossible until it's done.",
+        author: "Nelson Mandela"
+      }
+    ];
+
+    const quoteText = document.getElementById("quoteText");
+    const quoteAuthor = document.getElementById("quoteAuthor");
+    const shareStatus = document.getElementById("shareStatus");
+    const newQuoteBtn = document.getElementById("newQuoteBtn");
+    const shareQuoteBtn = document.getElementById("shareQuoteBtn");
+    let currentQuote;
+
+    function showQuote() {
+      currentQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      quoteText.textContent = currentQuote.text;
+      quoteAuthor.textContent = `— ${currentQuote.author}`;
+      shareStatus.textContent = "";
+    }
+
+    async function shareQuote() {
+      if (!navigator.share) {
+        shareStatus.textContent = "Sharing isn't supported in this browser.";
+        return;
+      }
+      try {
+        await navigator.share({
+          title: "Daily Inspiration Quote",
+          text: `${currentQuote.text} — ${currentQuote.author}`
+        });
+        shareStatus.textContent = "Quote shared.";
+      } catch (error) {
+        if (error.name === "AbortError") {
+          shareStatus.textContent = "Sharing canceled.";
+          return;
+        }
+        console.error("Could not share the quote.", error);
+        shareStatus.textContent = "Could not share the quote. Please try again.";
+      }
+    }
+
+    newQuoteBtn.addEventListener("click", showQuote);
+    shareQuoteBtn.addEventListener("click", shareQuote);
+    showQuote();
+  </script>
+</body>
+</html>
